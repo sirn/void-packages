@@ -1,0 +1,14 @@
+Patches rpool detection since grub-probe may not be able to detect
+zfs filesystem with certain flags.
+--- util/grub.d/10_linux.in	2018-11-25 02:13:02.000000000 +0900
++++ util/grub.d/10_linux.in	2020-04-29 00:38:53.091231269 +0900
+@@ -72,6 +72,9 @@
+ 	fi;;
+     xzfs)
+ 	rpool=`${grub_probe} --device ${GRUB_DEVICE} --target=fs_label 2>/dev/null || true`
++	if [ -z "${rpool}" ] && command -v zdb >/dev/null; then
++		rpool=`zdb -l ${GRUB_DEVICE} |grep " name:" | cut -d\' -f2`
++	fi
+ 	bootfs="`make_system_path_relative_to_its_root / | sed -e "s,@$,,"`"
+ 	LINUX_ROOT_DEVICE="ZFS=${rpool}${bootfs%/}"
+ 	;;
