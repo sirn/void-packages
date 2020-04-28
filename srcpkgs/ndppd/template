@@ -1,14 +1,17 @@
 # Template file for 'ndppd'
 pkgname=ndppd
-version=0.2.5
+version=0.2.5.git20191215
+_version=2eb55c8e2b122998800bef871d6217ea0c932ec6
 revision=1
 build_style=gnu-makefile
 short_desc="NDP Proxy Daemon"
 maintainer="lemmi <lemmi@nerd2nerd.org>"
 license="GPL-3.0-or-later"
 homepage="https://github.com/DanielAdolfsson/ndppd"
-distfiles="https://github.com/DanielAdolfsson/ndppd/archive/${version}.tar.gz"
-checksum=ee934167f8357f0bd0015e201a77fbe4d028c59e89dc98113805c6855e1c3992
+distfiles="https://github.com/DanielAdolfsson/ndppd/archive/${_version}.tar.gz"
+checksum=cd0929ddfa37638ff786a7f38b84eb21fe2098c490af336a4c93fa3372e2b883
+wrksrc="${pkgname}-${_version}"
+patch_args="-Np1"
 
 do_install() {
 	vbin ndppd
