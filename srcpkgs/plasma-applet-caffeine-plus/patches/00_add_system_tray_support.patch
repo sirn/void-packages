@@ -1,0 +1,24 @@
+From f2159d95fc843263f600861f9e7429737f508e8a Mon Sep 17 00:00:00 2001
+From: properlypurple <40858144+properlypurple@users.noreply.github.com>
+Date: Wed, 22 Apr 2020 15:15:21 +0530
+Subject: [PATCH] Update metadata.desktop
+
+Add option to show plasmoid in notification area(system tray)
+---
+ plasmoid/metadata.desktop | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/plasmoid/metadata.desktop b/plasmoid/metadata.desktop
+index d1c7e08..620eff8 100644
+--- plasmoid/metadata.desktop
++++ plasmoid/metadata.desktop
+@@ -15,4 +15,7 @@ X-KDE-PluginInfo-Website=plasma.kde.org
+ X-Plasma-API=declarativeappletscript
+ X-Plasma-MainScript=ui/main.qml
+ X-KDE-PluginInfo-Category=Miscellaneous
+-X-KDE-PluginInfo-EnabledByDefault=true
+\ No newline at end of file
++X-KDE-PluginInfo-EnabledByDefault=true
++
++X-Plasma-NotificationArea=true
++X-Plasma-NotificationAreaCategory=Hardware

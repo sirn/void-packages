@@ -1,0 +1,12 @@
+pkgname=plasma-applet-caffeine-plus
+version=1.4
+revision=1
+build_style=cmake
+hostmakedepends="extra-cmake-modules"
+makedepends="plasma-framework-devel kdeclarative-devel"
+short_desc="Disable screensaver and auto suspend"
+maintainer="Kridsada Thanabulpong <sirn@ogsite.net>"
+license="GPL-2.0"
+homepage="https://github.com/qunxyz/plasma-applet-caffeine-plus"
+distfiles="https://github.com/qunxyz/plasma-applet-caffeine-plus/archive/v${version}.tar.gz"
+checksum=f15ac283d5adbdbd909dc76b258aa406b7ba05d0156bef76c9632ef7da67ce8f
