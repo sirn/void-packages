@@ -1,7 +1,7 @@
 # Template file for 'linux5.7'
 pkgname=linux5.7-xanmod
-version=5.7.7
-_patchver=xanmod1
+version=5.7.8
+_patchver=xanmod2
 revision=1
 wrksrc="linux-${version%.*}"
 short_desc="Linux kernel and modules (${version%.*} series) - XanMod patchset"
@@ -13,7 +13,7 @@ distfiles="
   https://github.com/xanmod/linux/releases/download/${version}-${_patchver}/patch-${version}-${_patchver}.xz"
 checksum="
   de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0
-  79248a3bcbf37eab31d0266a2b3e60ac6657148ed1186da85421f50aa7ea439b"
+  33908de003bbc229d6940ede04d7d036a72b78737214e40b37c5b737f0b9902b"
 python_version=3
 patch_args="-Np1"
 
