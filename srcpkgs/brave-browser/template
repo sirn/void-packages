@@ -1,0 +1,40 @@
+# Template file for 'brave-browser'
+pkgname=brave-browser
+version=1.11.101
+revision=1
+archs="x86_64"
+hostmakedepends="tar xz"
+short_desc="Web browser that blocks ads and trackers by default"
+maintainer="Kridsada Thanabulpong <sirn@ogsite.net>"
+license="Proprietary"
+homepage="https://brave.com/download"
+repository=nonfree
+restricted=yes
+nostrip=yes
+
+_baseUrl="https://brave-browser-apt-release.s3.brave.com/pool/main/b/${pkgname}"
+_filename=${pkgname}_${version}_amd64.deb
+_braveUrl="${_baseUrl}/${_filename}"
+
+distfiles="$_braveUrl"
+checksum=d697673e63c4edcd34ed22f84c28422bbc1c8516339a900abd85f4addbddbc90
+
+do_extract() {
+	mkdir -p "${DESTDIR}"
+	ar x "${XBPS_SRCDISTDIR}/${pkgname}-${version}/${_filename}"
+}
+
+do_install() {
+	tar xf data.tar.xz -C ${DESTDIR}
+
+	for size in 16 24 32 48 64 128 256; do
+		mkdir -p ${DESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps
+		mv \
+			${DESTDIR}/opt/brave.com/brave/product_logo_${size}.png \
+			${DESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps/${pkgname}.png
+	done
+
+	rm -rf ${DESTDIR}/opt/brave.com/brave/*.xpm
+	rm -rf ${DESTDIR}/opt/brave.com/brave/cron
+	rm -rf ${DESTDIR}/etc
+}

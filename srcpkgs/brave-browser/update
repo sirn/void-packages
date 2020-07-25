@@ -1,0 +1,2 @@
+site="https://brave-browser-apt-release.s3.brave.com/dists/stable/main/binary-amd64/Packages"
+pattern="brave-browser_\K\d+\.\d+\.\d+(?=_amd64)"
