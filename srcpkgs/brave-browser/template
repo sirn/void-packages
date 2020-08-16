@@ -1,6 +1,6 @@
 # Template file for 'brave-browser'
 pkgname=brave-browser
-version=1.11.101
+version=1.12.112
 revision=1
 archs="x86_64"
 hostmakedepends="tar xz"
@@ -17,7 +17,7 @@ _filename=${pkgname}_${version}_amd64.deb
 _braveUrl="${_baseUrl}/${_filename}"
 
 distfiles="$_braveUrl"
-checksum=d697673e63c4edcd34ed22f84c28422bbc1c8516339a900abd85f4addbddbc90
+checksum=abbe4231cb48f522ee7c172060a8dc55aeaf93d7d265bba077cce4ccc3af7d5b
 
 do_extract() {
 	mkdir -p "${DESTDIR}"
