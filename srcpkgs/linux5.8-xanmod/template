@@ -1,6 +1,6 @@
 # Template file for 'linux5.8'
 pkgname=linux5.8-xanmod
-version=5.8.3
+version=5.8.5
 _patchver=xanmod1
 revision=1
 wrksrc="linux-${version%.*}"
@@ -13,7 +13,7 @@ distfiles="
   https://github.com/xanmod/linux/releases/download/${version}-${_patchver}/patch-${version}-${_patchver}.xz"
 checksum="
   e7f75186aa0642114af8f19d99559937300ca27acaf7451b36d4f9b0f85cf1f5
-  956ee2c57d352b17ed801e46c11c759d8897fe05eb9726f554c738bb86d58c35"
+  2e1237c1a0e14dc4da1d46df595538ede40045eb46060226aa075f1e77337bf2"
 python_version=3
 patch_args="-Np1"
 
