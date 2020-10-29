@@ -2,7 +2,7 @@
 pkgname=linux5.8-xanmod
 version=5.8.16
 _patchver=xanmod1
-revision=1
+revision=2
 wrksrc="linux-${version%.*}"
 short_desc="Linux kernel and modules (${version%.*} series) - XanMod patchset"
 maintainer="Orphaned <orphan@voidlinux.org>"
