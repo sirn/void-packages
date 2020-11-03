@@ -1,8 +1,8 @@
 # Template file for 'linux5.8'
 pkgname=linux5.8-xanmod
-version=5.8.16
+version=5.8.18
 _patchver=xanmod1
-revision=3
+revision=1
 wrksrc="linux-${version%.*}"
 short_desc="Linux kernel and modules (${version%.*} series) - XanMod patchset"
 maintainer="Orphaned <orphan@voidlinux.org>"
@@ -13,7 +13,7 @@ distfiles="
   https://github.com/xanmod/linux/releases/download/${version}-${_patchver}/patch-${version}-${_patchver}.xz"
 checksum="
   e7f75186aa0642114af8f19d99559937300ca27acaf7451b36d4f9b0f85cf1f5
-  d6b8d9d5c273a9f8ce8c56470cf27d1a8b2b9460f27d51d25548e6a0ff52315b"
+  22e52950821392a13eac707ccca928e2b645a7f69f5ebeb4563f80b8abd70d36"
 python_version=3
 patch_args="-Np1"
 
