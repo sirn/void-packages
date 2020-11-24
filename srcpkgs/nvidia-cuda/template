@@ -1,0 +1,91 @@
+# Template file for 'nvidia-cuda'
+pkgname=nvidia-cuda
+version=11.1.1
+_driverver=455.32.00
+revision=1
+archs="x86_64"
+hostmakedepends="nvidia ncurses tar"
+depends="gcc nvidia ncurses"
+short_desc="Nvidia CUDA toolkit"
+maintainer="Kridsada Thanabulpong <sirn@ogsite.net>"
+license="Proprietary"
+homepage="https://developer.nvidia.com/cuda-zone"
+distfiles="http://developer.download.nvidia.com/compute/cuda/${version}/local_installers/cuda_${version}_${_driverver}_linux.run"
+checksum=3eae6727086024925ebbcef3e9a45ad379d8490768fd00f9c2d8b6fd9cd8dd8f
+nostrip=yes
+noshlibprovides=yes
+python_version=3
+skiprdeps="
+  /opt/cuda/nsight_compute/target/linux-desktop-glibc_2_19_0-ppc64le/libcuda-injection.so
+  /opt/cuda/nsight_compute/target/linux-desktop-glibc_2_19_0-ppc64le/libnvperf_host.so
+  /opt/cuda/nsight_compute/target/linux-desktop-glibc_2_19_0-ppc64le/libnvperf_target.so
+  /opt/cuda/nsight_compute/target/linux-desktop-glibc_2_19_0-ppc64le/libInterceptorInjectionTarget.so
+  /opt/cuda/nsight_compute/target/linux-desktop-glibc_2_19_0-ppc64le/libTreeLauncherTargetInjection.so
+  /opt/cuda/nsight_compute/target/linux-desktop-glibc_2_19_0-ppc64le/ncu
+  /opt/cuda/nsight_compute/target/linux-desktop-glibc_2_19_0-ppc64le/libnvperfapi64.so
+  /opt/cuda/nsight_compute/target/linux-desktop-glibc_2_11_3-x86/libInterceptorInjectionTarget.so
+  /opt/cuda/nsight_compute/target/linux-desktop-glibc_2_11_3-x86/libTreeLauncherTargetInjection.so
+  /opt/cuda/nsight_compute/target/linux-desktop-glibc_2_11_3-x86/libTreeLauncherTargetUpdatePreloadInjection.so
+  /opt/cuda/nsight_systems/target-linux-armv8/nsys
+  /opt/cuda/nsight_systems/target-linux-armv8/libToolsInjection64.so"
+
+do_extract() {
+	sh "${XBPS_SRCDISTDIR}/${pkgname}-${version}/cuda_${version}_${_driverver}_linux.run" \
+		--target "${wrksrc}" \
+		--noexec
+}
+
+do_install() {
+	cd "${wrksrc}/builds"
+
+        rm -r NVIDIA*.run bin
+        mkdir -p "${DESTDIR}/opt/cuda/extras"
+        mv cuda_samples "${DESTDIR}/opt/cuda/samples"
+        mv integration nsight_compute nsight_systems "${DESTDIR}/opt/cuda"
+        mv cuda_sanitizer_api/compute-sanitizer "${DESTDIR}/opt/cuda/extras/compute-sanitizer"
+        rmdir cuda_sanitizer_api
+
+        for lib in */; do
+                cp -r $lib/* "${DESTDIR}/opt/cuda/"
+        done
+
+        # Define compilers for CUDA to use.
+        # This allows us to use older versions of GCC if we have to.
+        ln -s /usr/bin/gcc "${DESTDIR}/opt/cuda/bin/gcc"
+        ln -s /usr/bin/g++ "${DESTDIR}/opt/cuda/bin/g++"
+
+        # Install profile and ld.so.config files
+        install -Dm755 "${FILESDIR}/cuda.sh" "${DESTDIR}/etc/profile.d/cuda.sh"
+        install -Dm644 "${FILESDIR}/cuda.conf" "${DESTDIR}/etc/ld.so.conf.d/cuda.conf"
+
+        # Install pkgconfig files
+        mkdir -p "$DESTDIR"/usr/lib/pkgconfig
+        cp "${FILESDIR}"/*.pc "${DESTDIR}"/usr/lib/pkgconfig
+
+        # Allow newer compilers to work.
+        sed -i \
+               "/.*unsupported GNU version.*/d" \
+               "${DESTDIR}"/opt/cuda/targets/x86_64-linux/include/crt/host_config.h
+
+        sed -i \
+               "/.*unsupported clang version.*/d" \
+               "${DESTDIR}"/opt/cuda/targets/x86_64-linux/include/crt/host_config.h
+
+        # Fix Makefile paths to CUDA
+        for f in $(find "$DESTDIR"/opt/cuda -name Makefile); do
+                sed -i "s|/usr/local/cuda|/opt/cuda|g" "$f"
+        done
+
+        # NVIDIA has trouble with counting and numbering
+        # as well as the elusive concept of a SONAME so...
+        ln -s \
+                /opt/cuda/targets/x86_64-linux/lib/libcudart.so.11.1.74 \
+                "${DESTDIR}/opt/cuda/targets/x86_64-linux/lib/libcudart.so.11.1"
+
+	# Fake rdeps
+	ln -sf /usr/lib/libncursesw.so.6 "${DESTDIR}"/opt/cuda/targets/x86_64-linux/lib/libncursesw.so.5
+	ln -sf /usr/lib/libncursesw.so.6 "${DESTDIR}"/opt/cuda/targets/x86_64-linux/lib/libtinfo.so.5
+	ln -sf /usr/lib/libcuda.so.1 "${DESTDIR}"/opt/cuda/targets/x86_64-linux/lib/libcuda.so.1
+
+        vlicense EULA.txt
+}
