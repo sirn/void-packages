@@ -2,7 +2,7 @@
 pkgname=linux5.10-zen
 version=5.10.3
 _patchver=zen1
-revision=1
+revision=2
 wrksrc="linux-${version%.*}"
 short_desc="Linux kernel and modules (${version%.*} series) - Zen patchset"
 maintainer="Orphaned <orphan@voidlinux.org>"
