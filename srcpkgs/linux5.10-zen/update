@@ -1,0 +1,2 @@
+site=http://github.com/zen-kernel/zen-kernel/tags/
+pattern='\K5\.10\.[\d]+(?=-zen[\d]+)'
