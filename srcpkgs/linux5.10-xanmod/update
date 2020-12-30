@@ -1,0 +1,2 @@
+site=http://github.com/xanmod/linux/tags/
+pattern='\K5\.9\.[\d]+'
