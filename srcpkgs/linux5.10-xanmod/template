@@ -1,8 +1,8 @@
 # Template file for 'linux5.10'
 pkgname=linux5.10-xanmod
-version=5.10.3
+version=5.10.5
 _patchver=xanmod1
-revision=2
+revision=1
 wrksrc="linux-${version%.*}"
 short_desc="Linux kernel and modules (${version%.*} series) - XanMod patchset"
 maintainer="Orphaned <orphan@voidlinux.org>"
@@ -13,7 +13,7 @@ distfiles="
   https://github.com/xanmod/linux/releases/download/${version}-${_patchver}/patch-${version}-${_patchver}.xz"
 checksum="
   dcdf99e43e98330d925016985bfbc7b83c66d367b714b2de0cbbfcbf83d8ca43
-  c76a4deb12ada182baaac17a0ff1b6a3b2848d308e32dd765d855e27934e6850"
+  a520302a6761e78c95374e7a7721fb263b28b50c91062939f256f04425ed9f69"
 python_version=3
 patch_args="-Np1"
 
