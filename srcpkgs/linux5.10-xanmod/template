@@ -2,7 +2,7 @@
 pkgname=linux5.10-xanmod
 version=5.10.5
 _patchver=xanmod1
-revision=1
+revision=2
 wrksrc="linux-${version%.*}"
 short_desc="Linux kernel and modules (${version%.*} series) - XanMod patchset"
 maintainer="Orphaned <orphan@voidlinux.org>"
@@ -102,11 +102,6 @@ do_configure() {
 		scripts/config --undefine CONFIG_MODULE_SIG_SHA512
 		scripts/config --enable CONFIG_MODULE_SIG_SHA1
 		scripts/config --set-str CONFIG_MODULE_SIG_HASH "sha1"
-
-		# Enable experimental Cachy by default
-		scripts/config --disable CONFIG_NUMA
-		scripts/config --disable FAIR_GROUP_SCHED
-		scripts/config --enable CONFIG_CACHY_SCHED
 
                 # Use kernel defaults; do not ask in case of upstream patched config
                 # We override config using scripts/config above
