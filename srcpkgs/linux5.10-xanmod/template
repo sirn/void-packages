@@ -2,7 +2,7 @@
 pkgname=linux5.10-xanmod
 version=5.10.22
 _patchver=xanmod1
-revision=1
+revision=2
 wrksrc="linux-${version%.*}"
 short_desc="Linux kernel and modules (${version%.*} series) - XanMod patchset"
 maintainer="Orphaned <orphan@voidlinux.org>"
@@ -27,7 +27,7 @@ noshlibprovides=yes
 preserve=yes
 
 hostmakedepends="tar xz bc elfutils-devel flex gmp-devel kmod libmpc-devel
- libressl-devel perl uboot-mkimage cpio pahole python3"
+ openssl-devel perl uboot-mkimage cpio pahole python3"
 
 _kernver="${version}-${_patchver}_${revision}"
 triggers="kernel-hooks"
@@ -98,7 +98,7 @@ do_configure() {
 		scripts/config --undefine CONFIG_KERNEL_LZ4
 		scripts/config --enable CONFIG_KERNEL_XZ
 
-		# LibreSSL only support SHA1 signing
+		# Void Linux uses SHA1 signing
 		scripts/config --undefine CONFIG_MODULE_SIG_SHA512
 		scripts/config --enable CONFIG_MODULE_SIG_SHA1
 		scripts/config --set-str CONFIG_MODULE_SIG_HASH "sha1"
