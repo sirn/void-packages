@@ -1,6 +1,6 @@
 # Template file for 'lok'
 pkgname=lok
-version=6.2
+version=6.3
 revision=1
 build_style=gnu-makefile
 short_desc="A Linux port of OpenBSD's awk"
@@ -8,7 +8,7 @@ maintainer="Orphaned <orphan@voidlinux.org>"
 license="ISC"
 homepage="https://github.com/dimkr/lok"
 distfiles="https://github.com/dimkr/lok/archive/${version}.tar.gz"
-checksum=17215d1ef5760e282562bd852abab5ac5ae136fe579c02bb8fb6f9734e2c3185
+checksum=236c1ed1eea5c863900a4ff9741d1c2a4858130fdbf3c9fd4585e4b5c7d93952
 make_build_args="PROG=lok" # Make the binary built be called lok
 make_install_args="PROG=lok MANDIR=usr/share/man"
 
