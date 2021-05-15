@@ -1,6 +1,6 @@
 # Template file for 'linux5.11'
 pkgname=linux5.11-xanmod
-version=5.11.16
+version=5.11.19
 _patchver=xanmod1
 revision=1
 wrksrc="linux-${version%.*}"
@@ -13,7 +13,7 @@ distfiles="
   https://github.com/xanmod/linux/releases/download/${version}-${_patchver}/patch-${version}-${_patchver}.xz"
 checksum="
   04f07b54f0d40adfab02ee6cbd2a942c96728d87c1ef9e120d0cb9ba3fe067b4
-  3ba2a77d4cd9ab5a63a137a8fb18a9d27e7e3172b2130ad34888ae24f13086b2"
+  63915b0ec5a955f8e56910d491bbf23e6162859a99291bc0c5ab6eeb85c0f75e"
 python_version=3
 patch_args="-Np1"
 
