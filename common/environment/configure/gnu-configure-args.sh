@@ -124,6 +124,11 @@ case "$XBPS_TARGET_MACHINE" in
 		. ${_AUTOCONFCACHEDIR}/powerpc32-linux
 		;;
 
+        riscv64*)
+		. ${_AUTOCONFCACHEDIR}/endian-little
+		. ${_AUTOCONFCACHEDIR}/riscv64-linux
+                ;;
+
 	*) ;;
 esac
 

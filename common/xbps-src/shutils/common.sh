@@ -272,6 +272,7 @@ get_endian() {
         ppc*le)   echo "le";;
         ppc*)     echo "be";;
         x86_64)   echo "le";;
+        riscv*)   echo "le";;
     esac
 }
 
@@ -298,6 +299,8 @@ get_wordsize() {
         mips*)    echo "32";;
         ppc64*)   echo "64";;
         ppc*)     echo "32";;
+        riscv32)  echo "32";;
+        riscv64)  echo "64";;
         x86_64)   echo "64";;
     esac
 }
@@ -311,6 +314,7 @@ get_no_atomic8() {
         mips*)    echo "yes";;
         ppcle)    echo "yes";;
         ppc)      echo "yes";;
+        riscv*)   echo "yes";;
     esac
 }
 
