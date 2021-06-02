@@ -4,6 +4,7 @@
 # Optional variables:
 #
 # - cross_gcc_skip_go - do not build gccgo support
+# - cross_gcc_include_libatomic - include libatomic in toolchain
 # - cross_binutils_configure_args
 # - cross_gcc_bootstrap_configure_args
 # - cross_gcc_configure_args
@@ -617,7 +618,9 @@ do_install() {
 	rm -vf ${DESTDIR}/${adalib}/libgna{rl,t}.so
 
 	# Remove unnecessary libatomic which is only built for gccgo
-	rm -rf ${DESTDIR}/${sysroot}/usr/lib/libatomic.*
+	if [ -z "$cross_gcc_include_libatomic" ]; then
+		rm -rf ${DESTDIR}/${sysroot}/usr/lib/libatomic.*
+	fi
 
 	# If libquadmath was forced (needed for gfortran on some platforms)
 	# then remove it because it conflicts with libquadmath package
