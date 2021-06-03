@@ -5,7 +5,7 @@ revision=1
 build_style=gnu-configure
 configure_args="--enable-utf8 --enable-unicode-properties --with-pic
  --enable-pcregrep-libz --enable-pcregrep-libbz2 --enable-newline-is-anycrlf
- --enable-pcretest-libedit --enable-jit --enable-static"
+ --enable-pcretest-libedit --enable-static"
 makedepends="bzip2-devel libedit-devel zlib-devel"
 short_desc="Perl Compatible Regular Expressions"
 maintainer="Orphaned <orphan@voidlinux.org>"
@@ -17,6 +17,11 @@ checksum=19108658b23b3ec5058edc9f66ac545ea19f9537234be1ec62b714c84399366d
 case "$XBPS_TARGET_MACHINE" in
 	mips*) ;; # Without stack for recursion the mips builds fail
 	*) configure_args+=" --disable-stack-for-recursion" ;;
+esac
+
+case "$XBPS_TARGET_MACHINE" in
+	riscv* ) ;; # No JIT for RISC-V platform
+	*) configure_args+=" --enable-jit" ;;
 esac
 
 post_install() {
