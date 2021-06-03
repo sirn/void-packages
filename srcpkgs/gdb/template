@@ -32,7 +32,11 @@ build_options="gdbserver multiarch static python debuginfod"
 desc_option_debuginfod="Enable support for libdebuginfod"
 desc_option_multiarch="Enable support for all architectures"
 desc_option_gdbserver="Enable support for building GDB server"
-build_options_default="gdbserver python debuginfod"
+build_options_default="python debuginfod"
+case "$XBPS_TARGET_MACHINE" in
+	riscv*) build_options_default="python";;
+	*) build_options_default="gdbserver python";;
+esac
 vopt_conflict gdbserver static
 vopt_conflict debuginfod static
 
