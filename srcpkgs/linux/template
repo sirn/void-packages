@@ -17,6 +17,10 @@ case "$XBPS_TARGET_MACHINE" in
 		depends="linux${version} linux-firmware-amd linux-firmware-nvidia linux-firmware-network dracut"
 		_depends_headers="linux${version}-headers"
 		;;
+	riscv*)
+		depends="linux${version} linux-firmware-amd linux-firmware-nvidia linux-firmware-network"
+		_depends_headers="linux${version}-headers"
+		;;
 	arm*)
 		depends="linux${version}"
 		_depends_headers="linux${version}-headers"
