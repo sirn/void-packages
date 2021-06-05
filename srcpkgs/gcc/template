@@ -45,6 +45,7 @@ _have_gccgo=yes
 # 32-bit little endian PowerPC has no support at all (no GOARCH)
 case "$XBPS_TARGET_MACHINE" in
 	ppc64*) ;;
+	riscv*) _have_gccgo=no ;;
 	mips*-musl|ppc*) _have_gccgo=no ;;
 esac
 
@@ -65,6 +66,12 @@ build_options="ada gnatboot"
 build_options_default="ada"
 desc_option_ada="Enable Ada build"
 desc_option_gnatboot="Enable Ada bootstrap using adacore.com binaries"
+
+case "$XBPS_TARGET_MACHINE" in
+	riscv*)
+		depends+=" libatomic libatomic-devel"
+		;;
+esac
 
 if [ "$build_option_gnatboot" ]; then
 	case "$XBPS_TARGET_MACHINE" in
@@ -126,6 +133,8 @@ case "$XBPS_TARGET_MACHINE" in
 	mipshf-musl) _triplet="mips-linux-muslhf";;
 	mipsel-musl) _triplet="mipsel-linux-musl";;
 	mipselhf-musl) _triplet="mipsel-linux-muslhf";;
+	riscv64) _triplet="riscv64-linux-gnu";;
+	riscv64-musl) _triplet="riscv64-linux-musl";;
 esac
 case "$XBPS_TARGET_MACHINE" in
 	*-musl)	 depends+=" musl-devel";;
@@ -144,6 +153,7 @@ case "$XBPS_TARGET_MACHINE" in
 esac
 case "$XBPS_TARGET_MACHINE" in
 	mips*) ;;
+	riscv*) ;;
 	x86_64*|i686) subpackages+=" libitm libitm-devel";;
 	*) subpackages+=" libitm libitm-devel";;
 esac
@@ -206,6 +216,7 @@ do_configure() {
 		ppc64le*) _args+=" --with-abi=elfv2 --enable-secureplt --enable-targets=powerpcle-linux";;
 		ppc64*) _args+=" --with-abi=elfv2 --enable-secureplt --enable-targets=powerpc-linux";;
 		ppc*) _args+=" --enable-secureplt";;
+		riscv64*) _args+=" --with-arch=rv64gc";;
 	esac
 
 	# on ppc64le-musl and all big endian ppc64
