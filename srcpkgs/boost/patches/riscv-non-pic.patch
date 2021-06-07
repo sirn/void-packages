@@ -1,0 +1,33 @@
+From e86c66714cb4abb0a6f6ebf7d5fe5da696518482 Mon Sep 17 00:00:00 2001
+From: Andreas Schwab <schwab@suse.de>
+Date: Fri, 6 Dec 2019 21:40:34 +0100
+Subject: [PATCH] Fix non-PIC in RISC-V assembly
+
+Since this ends up in a shared library we should use a PLT call.  Also,
+the finish label is local, so we can use lla instead of la.
+---
+ src/asm/make_riscv64_sysv_elf_gas.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/asm/make_riscv64_sysv_elf_gas.S b/src/asm/make_riscv64_sysv_elf_gas.S
+index 559f61df..5322e0fd 100644
+--- a/libs/context/src/asm/make_riscv64_sysv_elf_gas.S
++++ b/libs/context/src/asm/make_riscv64_sysv_elf_gas.S
+@@ -75,7 +75,7 @@ make_fcontext:
+
+     # save address of finish as return-address for context-function
+     # will be entered after context-function returns (RA register)
+-    la  a4, finish
++    lla  a4, finish
+     sd  a4, 0xc0(a0)
+
+     ret // return pointer to context-data (a0)
+@@ -84,7 +84,7 @@ finish:
+     # exit code is zero
+     li  a0, 0
+     # exit application
+-    tail  _exit
++    tail  _exit@plt
+
+ .size   make_fcontext,.-make_fcontext
+ # Mark that we don't need executable stack.
