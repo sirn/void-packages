@@ -1,6 +1,6 @@
 # Template file for 'linux5.12'
 pkgname=linux5.12-xanmod
-version=5.12.4
+version=5.12.10
 _patchver=xanmod1
 revision=1
 wrksrc="linux-${version%.*}"
@@ -13,7 +13,7 @@ distfiles="
   https://github.com/xanmod/linux/releases/download/${version}-${_patchver}/patch-${version}-${_patchver}.xz"
 checksum="
   7d0df6f2bf2384d68d0bd8e1fe3e071d64364dcdc6002e7b5c87c92d48fac366
-  550c0791ec823628b94dd9220942510faef33f2e0912a3cc0d0833f3f16561a1"
+  ad47cc2b1e14ad443a419af5c56c3adc29f299b399ddac72a6fd5cfc5c64265d"
 python_version=3
 patch_args="-Np1"
 
@@ -79,37 +79,21 @@ do_configure() {
 		mips*) arch=mips;;
 	esac
 
-	if [ -f ${FILESDIR}/${subarch:-$arch}-dotconfig-custom ]; then
-		msg_normal "Detected a custom .config file for your arch, using it.\n"
-		cp -f ${FILESDIR}/${subarch:-$arch}-dotconfig-custom .config
-		make ${makejobs} ARCH=$arch ${_cross} oldconfig
-	elif [ -f ${FILESDIR}/${subarch:-$arch}-dotconfig ]; then
-		msg_normal "Detected a .config file for your arch, using it.\n"
-		cp -f ${FILESDIR}/${subarch:-$arch}-dotconfig .config
-		make ${makejobs} ARCH=$arch ${_cross} oldconfig
-	elif [ -f ${FILESDIR}/${XBPS_TARGET_MACHINE%%-musl}-dotconfig ]; then
-		msg_normal "Detected a .config file for your cpu family, using it.\n"
-		cp -f ${FILESDIR}/${XBPS_TARGET_MACHINE%%-musl}-dotconfig .config
-		make ${makejobs} ARCH=$arch ${_cross} oldconfig
-	elif [ -f ${wrksrc}/.config ]; then
-		msg_normal "Defaulting to ${_patchver} config.\n"
+	msg_normal "Defaulting to ${_patchver} config.\n"
+	cp "${wrksrc}/CONFIGS/xanmod/gcc/config" "${wrksrc}/.config"
 
-		# Void Linux uses Xz kernel
-		scripts/config --undefine CONFIG_KERNEL_ZSTD
-		scripts/config --enable CONFIG_KERNEL_XZ
+	# Void Linux uses Xz kernel
+	scripts/config --undefine CONFIG_KERNEL_ZSTD
+	scripts/config --enable CONFIG_KERNEL_XZ
 
-		# Void Linux uses SHA1 signing
-		scripts/config --undefine CONFIG_MODULE_SIG_SHA512
-		scripts/config --enable CONFIG_MODULE_SIG_SHA1
-		scripts/config --set-str CONFIG_MODULE_SIG_HASH "sha1"
+	# Void Linux uses SHA1 signing
+	scripts/config --undefine CONFIG_MODULE_SIG_SHA512
+	scripts/config --enable CONFIG_MODULE_SIG_SHA1
+	scripts/config --set-str CONFIG_MODULE_SIG_HASH "sha1"
 
-                # Use kernel defaults; do not ask in case of upstream patched config
-                # We override config using scripts/config above
-		make ${makejobs} ARCH=$arch ${_cross} olddefconfig
-	else
-		msg_normal "Defaulting to 'allmodconfig'.\n"
-		make ${makejobs} ARCH=$arch ${_cross} allmodconfig
-	fi
+	# Use kernel defaults; do not ask in case of upstream patched config
+	make ${makejobs} ARCH=$arch ${_cross} olddefconfig
+
 	# Always use our revision to CONFIG_LOCALVERSION to match our pkg version.
 	sed -i -e "s|^\(CONFIG_LOCALVERSION=\).*|\1\"_${revision}\"|" .config
 }
