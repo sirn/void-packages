@@ -15,7 +15,7 @@ skip_extraction="patch-${version}.xz"
 python_version=3
 
 # XXX Restrict archs until a proper <arch>-dotconfig is available in FILESDIR.
-archs="x86_64* i686* aarch64* ppc*"
+archs="x86_64* i686* aarch64* ppc* riscv64*"
 
 nodebug=yes  # -dbg package is generated below manually
 nostrip=yes
@@ -71,6 +71,7 @@ do_configure() {
 		ppc64*) arch=powerpc; subarch=ppc64;;
 		ppc*) arch=powerpc; subarch=ppc;;
 		mips*) arch=mips;;
+		riscv64*) arch=riscv; subarch=riscv64;;
 	esac
 
 	if [ -f ${FILESDIR}/${subarch:-$arch}-dotconfig-custom ]; then
@@ -96,6 +97,7 @@ do_build() {
 		aarch64*) _args="Image modules dtbs"; arch=arm64;;
 		ppc*) _args="zImage modules"; arch=powerpc;;
 		mips*) _args="uImage modules dtbs"; arch=mips;;
+		riscv*) _args="Image.gz modules dtbs"; arch=riscv;;
 	esac
 	export LDFLAGS=
 	make ARCH=$arch ${_cross} ${makejobs} prepare
@@ -112,6 +114,7 @@ do_install() {
 		aarch64*) arch=arm64;;
 		ppc*) arch=powerpc;;
 		mips*) arch=mips;;
+		riscv*) arch=riscv;
 	esac
 
 	# Run depmod after compressing modules - makes depmod.sh a noop
@@ -145,6 +148,10 @@ do_install() {
 			;;
 		mips)
 			vinstall arch/mips/boot/uImage.bin 644 boot uImage-${_kernver}
+			make ${makejobs} ARCH=${subarch:-$arch} INSTALL_DTBS_PATH=${DESTDIR}/boot/dtbs/dtbs-${_kernver} ${_cross} dtbs_install
+			;;
+		riscv)
+			vinstall arch/riscv/boot/Image.gz 644 boot vmlinux-${_kernver}
 			make ${makejobs} ARCH=${subarch:-$arch} INSTALL_DTBS_PATH=${DESTDIR}/boot/dtbs/dtbs-${_kernver} ${_cross} dtbs_install
 			;;
 	esac
@@ -284,6 +291,7 @@ do_install() {
 		arm|arm64) _args="x86* m* p*";;
 		powerpc) _args="arm* m* x86* parisc";;
 		mips) _args="arm* x86* p*";;
+		riscv) _args="arm* m* x86* p*";;
 	esac
 	for arch in alpha avr32 blackfin cris frv h8300 \
 		ia64 s* um v850 xtensa ${_args}; do
